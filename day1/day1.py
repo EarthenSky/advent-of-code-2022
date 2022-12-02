@@ -5,7 +5,7 @@
 everything = []
 themax = 0
 
-with open('input') as f:
+with open('input1') as f:
     current = 0
     for line in f.readlines():
         if line == "\n":
@@ -15,4 +15,4 @@ with open('input') as f:
             current += int(line)
 
 print("part1: {}\t".format(sorted(everything)[-1]))
-print("part1: {}\t".format(sum(sorted(everything)[-3:])))
+print("part2: {}\t".format(sum(sorted(everything)[-3:])))
