@@ -2,8 +2,6 @@
 # python day2.py
 # pypy day2.py
 
-score = 0
-
 def as_abc(str):
     if str == "X":
         return "A"
@@ -36,6 +34,7 @@ def ties(str):
     else:
         return 3
 
+score = 0
 with open('input2') as f:
     for line in f.readlines():
         pair = line.split(" ")
@@ -79,7 +78,6 @@ with open('input2') as f:
             score2 += ties(l) + 3
         else:
             score2 += beats(l) + 6
-
 
 # set these to the vars:
 
