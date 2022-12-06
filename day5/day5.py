@@ -2,9 +2,6 @@
 # python day5.py
 # pypy day5.py
 
-# part1: TLFGBZHCN
-# part2: QRQFHFWCL
-
 score = ""
 model = []
 numinputlines = 0
