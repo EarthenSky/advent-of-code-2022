@@ -2,13 +2,17 @@
 # python day5.py
 # pypy day5.py
 
+# part1: TLFGBZHCN
+# part2: QRQFHFWCL
+
 score = ""
 model = []
-numlines = 0
+numinputlines = 0
 
 with open('input5') as f:
-    for line in f.readlines():
-        numlines += 1
+    lines = f.readlines() # any subsequent calls to readlines will return []
+    for line in lines:
+        numinputlines += 1
         thelen = int(len(line) / 4)
         
         line = line.replace("\n", "")
@@ -34,15 +38,7 @@ with open('input5') as f:
     for ls in model:
         ls.reverse()
 
-    print(model)
-
-with open('input5') as f:
-    i = 0
-    for line in f.readlines():
-        i += 1
-        if i <= numlines:
-            continue
-
+    for line in lines[numinputlines:]:
         line = line.replace("\n", "")
         words = line.split(" ")
         
@@ -54,8 +50,6 @@ with open('input5') as f:
             val = model[start].pop()
             model[end].append(val)
 
-        print(model)
-
     print(model)
 
     for ls in model:
@@ -64,11 +58,12 @@ with open('input5') as f:
 # put part 2 here
 score2 = ""
 model = []
-numlines = 0
+numinputlines = 0
 
 with open('input5') as f:
-    for line in f.readlines():
-        numlines += 1
+    lines = f.readlines()
+    for line in lines:
+        numinputlines += 1
         thelen = int(len(line) / 4)
         
         line = line.replace("\n", "")
@@ -94,15 +89,7 @@ with open('input5') as f:
     for ls in model:
         ls.reverse()
 
-    print(model)
-
-with open('input5') as f:
-    i = 0
-    for line in f.readlines():
-        i += 1
-        if i <= numlines:
-            continue
-
+    for line in lines[numinputlines:]:
         line = line.replace("\n", "")
         words = line.split(" ")
         
@@ -119,8 +106,6 @@ with open('input5') as f:
 
         for val in tmp_stack:
             model[end].append(val)
-
-        print(model)
 
     print(model)
 
