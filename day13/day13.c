@@ -32,7 +32,7 @@ void strinsert(char* s1, char* s2, int loc) {
 }
 
 // 3 rules: smaller int, smaller list, upgrade int to list of that int.
-bool compare_packets(char* p1, char* p2) {
+bool compare_packets(const char* p1_in, const char* p2_in) {
     int STATUS_LIST = 0;
     int STATUS_CLOSE_LIST = 1;
     int STATUS_NUMBER = 2;
@@ -41,6 +41,11 @@ bool compare_packets(char* p1, char* p2) {
     int left_stack[512], right_stack[512];
     
     int left_status, right_status;
+
+    // make mutable copies of p1 and p2
+    char p1[512], p2[512];
+    strcpy(p1, p1_in);
+    strcpy(p2, p2_in);
 
     int len1 = strlen(p1), len2 = strlen(p2);
     int li = 0, ri = 0;
@@ -159,6 +164,24 @@ bool compare_packets(char* p1, char* p2) {
     return true;
 }
 
+void sort(char* line_list, int line_len, int list_len) {
+    char tmp[512];
+
+    // this is an O(1) memory n^2 sort
+    for (int i = 1; i < list_len; i++) {
+        for (int j = i; j > 0; j--) {
+            char* cur_line = line_list + line_len*j;
+            char* bef_line = line_list + line_len*(j-1);
+            if (compare_packets(cur_line, bef_line)) {
+                // do a swap
+                strcpy(tmp, bef_line);
+                strcpy(bef_line, cur_line);
+                strcpy(cur_line, tmp);
+            }
+        }
+    }
+}
+
 // ---------------------------------- //
 // parts
 
@@ -196,9 +219,53 @@ void part1() {
 }
 
 void part2() {
+    int score = 1;
 
-    printf("part2: %d\n", 0);
+    // NOTE: i put an extra space at the end of the input files so that the reading works properly
+    FILE* fp = fopen("input13", "r");
+    if (fp == NULL) panic();
+    
+    // data structs here
+    char linebuf_list[512*512]; // is a null term string
+
+    int index = 1;
+    char linebuf0[512]; // tmp storage
+    for(;;) {
+        fgets(linebuf_list + index*512, 512, fp);
+        index += 1;
+        fgets(linebuf_list + index*512, 512, fp);
+        index += 1;
+
+        // grab empty line if it exists, or exit
+        char* succ = fgets(linebuf0, 512, fp);
+        if (!succ) break;
+    }
+
+    strcpy(linebuf_list + index*512, "[[2]]\n");
+    index += 1;
+
+    strcpy(linebuf_list + index*512, "[[6]]\n");
+    index += 1;
+
+    sort(linebuf_list, 512, index);
+
+    for (int i = 0; i < index; i++) {
+        char* s = linebuf_list + 512*i;
+        if (strcmp(s, "[[2]]\n") == 0 || strcmp(s, "[[6]]\n") == 0) {
+            score *= i+1;
+        }
+    }
+
+    /*
+    for (int i = 0; i < index; i++) {
+        printf("%s", linebuf_list + 512*i);
+    }
+    */
+
+    printf("part2: %d\n", score);
 }
+
+
 
 // ---------------------------------- //
 // runner
