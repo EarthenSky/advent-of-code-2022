@@ -53,9 +53,6 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
         char c1 = p1[li], c2 = p2[ri];
 
         //printf("\tli %d, ri %d\n", li, ri);
-        //printf("\tli %d\n", li);
-        //printf("\tri %d\n", ri);
-        //printf("\td\n");
 
         int left_chars_consumed, left_num_read;
         if (c1 == '[' || (c1 == ',' && p1[li+1] == '[')) {
@@ -64,9 +61,8 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
             if (c1 == ',') li += 1;
             left_status = STATUS_LIST;
         } else if (c1 == ']') {
-            //printf("\tclose list -> li: %d\n", li);
             // pop from stack until we hit a left bracket
-            while (left_size != 0 || left_stack[left_size-1] != '[') {
+            while (left_size != 0 && left_stack[left_size-1] != '[') {
                 left_size -= 1;
             }
             left_size -= 1; // NOTE: this would fail if we had two lists on the bottom level [][]
@@ -76,7 +72,6 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
             if (num_vars_read == 0) { 
                 sscanf(&p1[li], "%d%n", &left_num_read, &left_chars_consumed);
             }
-            //printf("\tleft chars consumed: %d\n", left_chars_consumed);
             li += left_chars_consumed-1;
             left_stack[left_size] = -left_num_read; // stored as -ve to avoid collision with chars
             left_size += 1;
@@ -91,7 +86,7 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
             right_status = STATUS_LIST;
         } else if (c2 == ']') {
             // pop from stack until we hit a left bracket
-            while (right_size != 0 || right_stack[right_size-1] != '[') {
+            while (right_size != 0 && right_stack[right_size-1] != '[') {
                 right_size -= 1;
             }
             right_size -= 1; // NOTE: this would fail if we had two lists on the bottom level [][]
@@ -101,7 +96,6 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
             if (num_vars_read == 0) { 
                 sscanf(&p2[ri], "%d%n", &right_num_read, &right_chars_consumed);
             }
-            //printf("\tright chars consumed: %d\n", right_chars_consumed);
             ri += right_chars_consumed-1;
             right_stack[right_size] = -right_num_read; // stored as -ve to avoid collision with chars
             right_size += 1;
@@ -117,7 +111,6 @@ bool compare_packets(const char* p1_in, const char* p2_in) {
                 return true;
             } else {
                 // pass
-                //printf("tie: %d vs %d\n", left_stack[left_size-1], right_stack[right_size-1]);
             }
         } else if (left_status == STATUS_LIST && right_status == STATUS_LIST) {
             // pass
@@ -256,15 +249,12 @@ void part2() {
         }
     }
 
-    /*
-    for (int i = 0; i < index; i++) {
+    /*for (int i = 0; i < index; i++) {
         printf("%s", linebuf_list + 512*i);
-    }
-    */
+    }*/
 
     printf("part2: %d\n", score);
 }
-
 
 
 // ---------------------------------- //
