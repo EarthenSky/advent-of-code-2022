@@ -151,176 +151,6 @@ int evaluate_paths(
     return max_pressure;
 }
 
-/*
-int evaluate_paths_w_elephant_a(
-    std::unordered_map<std::string, std::vector<std::string>>& map,
-    std::unordered_map<std::string, int>& flowrate,
-    std::vector<std::string>& visited, 
-    std::vector<std::string>& opened, 
-    std::vector<std::string>& openableLocations,
-    std::unordered_map<std::string, int>& distance_map,
-    std::string& curLoc, 
-    std::string& elephantLoc, 
-    int totalPressure, int releasingPressure, 
-    int minute,
-    int elephantMinute
-) {
-    if (minute == 26) {
-        // early exit
-        return totalPressure;
-    } else if (minute > 26) {
-        // release any extra minutes
-        return totalPressure - releasingPressure * (minute - 26);
-    } else if (opened.size() == openableLocations.size()) {
-        return totalPressure + releasingPressure * (26 - minute); 
-    }
-
-    totalPressure += releasingPressure; // release before moving
-    
-    // note: this is a worst case est, assuming we both sit here for the remaining time
-    int max_pressure = totalPressure + releasingPressure * (26 - (minute+1)); 
-
-    if (flowrate[curLoc] != 0 && std::find(opened.begin(), opened.end(), curLoc) == opened.end()) {
-        // case: current location has not been opened
-        opened.push_back(curLoc);
-
-        int addend = flowrate[curLoc];
-        releasingPressure += addend;
-
-        int pressure = evaluate_paths_w_elephant_b(
-            map, flowrate, visited, opened, 
-            openableLocations, distance_map, curLoc, elephantLoc, 
-            totalPressure, releasingPressure, minute+1, elephantMinute);
-
-        if (pressure > max_pressure) {
-            max_pressure = pressure;
-        }
-
-        releasingPressure -= addend;
-
-        opened.pop_back();
-    } else {
-        visited.push_back(curLoc);
-
-        // try moving to any openable locations
-        for (std::string next : openableLocations) {
-            if (std::count(visited.begin(), visited.end(), next) != 0 || std::count(opened.begin(), opened.end(), next) != 0) {
-                // no moving to duplicate openable locations
-                continue;
-            } else {
-                // adj in visited
-                int addend = releasingPressure * (distance_map[curLoc+next] - 1);
-                totalPressure += addend; // release before moving
-                
-                int pressure = evaluate_paths_w_elephant_b(
-                    map, flowrate, visited, opened, 
-                    openableLocations, distance_map, next, elephantLoc, 
-                    totalPressure, releasingPressure, minute+distance_map[curLoc+next], elephantMinute);
-
-                if (pressure > max_pressure) {
-                    max_pressure = pressure;
-                }
-
-                totalPressure -= addend;
-            }
-        }
-
-        visited.pop_back();
-    }
-    
-    return max_pressure;
-}
-
-// NOTE: elephants are strings w/ "e" at the end
-int evaluate_paths_w_elephant_b(
-    std::unordered_map<std::string, std::vector<std::string>>& map,
-    std::unordered_map<std::string, int>& flowrate,
-    std::vector<std::string>& visited, 
-    std::vector<std::string>& opened, 
-    std::vector<std::string>& openableLocations,
-    std::unordered_map<std::string, int>& distance_map,
-    std::string& curLoc, 
-    std::string& elephantLoc, 
-    int totalPressure, int releasingPressure, 
-    int minute, 
-    int elephantMinute
-) {
-    if (elephantMinute == 26) {
-        // early exit
-        return totalPressure;
-    } else if (elephantMinute > 26) {
-        // release any extra minutes
-        return totalPressure - releasingPressure * (minute - 26);
-    } else if (opened.size() == openableLocations.size()) {
-        return totalPressure + releasingPressure * (26 - minute); 
-    }
-
-    // don't release any pressure !!
-    //totalPressure += releasingPressure; // release before moving
-    
-    // note: this is a worst case est, assuming we both sit here for the remaining time
-    int max_pressure = totalPressure + releasingPressure * (26 - (minute+1)); 
-
-    if (flowrate[elephantLoc] != 0 && std::find(opened.begin(), opened.end(), elephantLoc) == opened.end()) {
-        // case: current location has not been opened
-        opened.push_back(elephantLoc);
-
-        int addend = flowrate[elephantLoc];
-        releasingPressure += addend;
-
-        int pressure = evaluate_paths_w_elephant_a(
-            map, flowrate, visited, opened, 
-            openableLocations, distance_map, curLoc, elephantLoc, 
-            totalPressure, releasingPressure, minute, elephantMinute+1);
-
-        if (pressure > max_pressure) {
-            max_pressure = pressure;
-        }
-
-        releasingPressure -= addend;
-
-        opened.pop_back();
-    } else {
-        visited.push_back(elephantLoc + "e");
-
-        // try moving to any openable locations
-        for (std::string next : openableLocations) {
-            if (std::count(visited.begin(), visited.end(), next) != 0 || std::count(opened.begin(), opened.end(), next) != 0) {
-                // no moving to duplicate openable locations
-                continue;
-            } else {
-                // adj in visited
-                int addend = releasingPressure * (distance_map[elephantLoc+next] - 1);
-                totalPressure += addend; // release before moving
-                
-                int pressure = evaluate_paths_w_elephant_a(
-                    map, flowrate, visited, opened, 
-                    openableLocations, distance_map, curLoc, next, 
-                    totalPressure, releasingPressure, minute, elephantMinute+distance_map[elephantLoc+next]);
-
-                if (pressure > max_pressure) {
-                    max_pressure = pressure;
-                }
-
-                totalPressure -= addend;
-            }
-        }
-
-        visited.pop_back();
-    }
-    
-    return max_pressure;
-}
-*/
-
-/*
-// a function to simulate a single order of opening
-int evaluate_path_pressure(
-    std::vector<std::string>& open_order,
-    std::unordered_map<std::string, int>& flowrate
-) { }
-*/
-
 struct node_t {
     std::vector<std::string> pastTargeted; // e at the end of the string represents elephant opened
     std::string selfLast;
@@ -521,7 +351,7 @@ int evaluate_paths_w_elephant(
             } else {
                 // TODO: step forwards n steps if selfDist and elephantDist are both bigger than 1 
                 // (this will probably have a small impact, but then the branches will succeed more maybe...)
-                
+
                 // take steps forwards
                 curr.selfDist -= 1;
                 curr.elephantDist -= 1;
@@ -713,5 +543,5 @@ void part2() {
 
 int main() {
     part1();
-    part2();
+    part2(); // WARNING: part2 takes 15+ minutes to run on a good cpu
 }
