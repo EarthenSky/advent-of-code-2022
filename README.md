@@ -4,6 +4,6 @@
 # languages:
 - days 1-10 are in python
 - days 11-13 are in c
-- day 14 is in c++
+- days 14-16 are in c++
 - 
 
