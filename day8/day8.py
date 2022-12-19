@@ -59,7 +59,12 @@ with open('input8') as f:
     newlines = []
     for line in oldlines:
         newlines += [line.replace("\n", "")]
-#   newlines, height = {
+#   // wait, maybe what i actually want here is to initialize via lambda?
+#   // what @takescope does, is just a kind of generic thing where it uses the scope to initialize the two variables
+#   // this may be a bad idea, but the concept here is to separate the scopes of variables more easily without building new functions & naming them something.
+#   // naming a function is challenging, and sometimes meaningless. We want the context to be able to describe certain common behaviours whenever possible. Minimize names!
+#   // a good example of this is the varaible i, j, k, etc... used for looping. These variable names are a fine solution, but we just don't want to be forced to name things that don't matter (in this case the names do matter though, so nevermind I guess lols)
+#   newlines, height = @takescope{
 #       newlines = []
 #       for line in f.readlines():
 #           this += [line.replace("\n", "")]
